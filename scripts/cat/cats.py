@@ -193,7 +193,7 @@ class Cat():
         self.pronouns = [self.default_pronouns[0].copy()]
         self.placement = None
         self.example = example
-        self.dead = False
+        self.dead = 0
         self.exiled = False
         self.outside = False
         self.dead_for = 0  # moons
@@ -429,7 +429,7 @@ class Cat():
                 self.thought = 'Was startled to find themself in Silverpelt for a moment... did they lose a life?'
                 return ""
             elif game.clan.leader_lives <= 0:
-                self.dead = True
+                self.dead = 1
                 game.just_died.append(self.ID)
                 game.clan.leader_lives = 0
                 self.thought = 'Is surprised to find themself walking the stars of Silverpelt'
@@ -438,7 +438,7 @@ class Cat():
                 else:
                     text = 'They\'ve lost their last life and have travelled to the Dark Forest.'
         else:
-            self.dead = True
+            self.dead = 1
             game.just_died.append(self.ID)
             self.thought = 'Is surprised to find themself walking the stars of Silverpelt'
 
