@@ -1,0 +1,29 @@
+[
+    {
+        "id": "general_zombie_thoughts",
+        "thoughts": [
+            "Slashes {PRONOUN/m_c/poss} claws into the ground clumsily",
+	    "Stares into space, almost as if trying to remember something",
+	    "Seems oddly passive today",
+	    "Tries to groom the blood dripping from {PRONOUN/m_c/poss} fur, almost out of habit",
+	    "Tries to put some prey on the fresh-kill pile, but it's thrown out due to being obviously infected",
+	    "Grrr... Brains...",
+	    "Really needs to take a bath!",
+	    "Tumbles around camp, seemingly unbothered by how hard {PRONOUN/m_c/subject} {VERB/m_c/hit/hits} the ground",
+	    "Squints at other Clan cats, almost like {PRONOUN/m_c/subject}{VERB/m_c/'re/'s} trying to recognize their faces",
+	    "Acting oddly"
+        ]
+    },
+    {
+        "id": "zombie_to_living_other",
+        "thoughts": [
+            "Tries to snarl out 'm_c' when r_c asks if {PRONOUN/m_c/subject} {VERB/m_c/know/knows} {PRONOUN/m_c/poss} name",
+            "Trying to bite r_c, but {PRONOUN/r_c/subject}{VERB/m_c/'re/'s} too agile",
+            "Hissing at everything that moves, especially r_c",
+            "Intensely stares at r_c as {PRONOUN/r_c/subject} perform {PRONOUN/r_c/poss} duties"
+        ],
+        "random_living_status": [
+            "living"
+        ]
+    }
+]
