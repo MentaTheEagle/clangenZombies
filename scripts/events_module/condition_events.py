@@ -218,7 +218,8 @@ class Condition_Events():
                         change_clan_relations(other_clan, difference=-1)
 
                     # let's change some relationship values \o/ check if another cat is mentioned
-                    if "other_cat" in injury_event.tags:
+                    # It shouldn't try to change relationships with zombies, though
+                    if "other_cat" in injury_event.tags and "other_cat_zombie" not in injury_event.tags:
                         involved_cats.append(other_cat.ID)
                         Condition_Events.handle_relationship_changes(cat, injury_event, other_cat)
 
@@ -274,7 +275,7 @@ class Condition_Events():
             if has_other_clan:
                 types.append("other_clans")
             # Add event text to the relationship log if two cats are involved
-            if other_cat:
+            if other_cat and not "other_cat_zombie" in injury_event.tags:
                 pos_rel_event = ["romantic", "platonic", "neg_dislike", "respect", "comfort", "neg_jealousy", "trust"]
                 neg_rel_event = ["neg_romantic", "neg_platonic", "dislike", "neg_respect", "neg_comfort", "jealousy", "neg_trust"]
                 effect = ""

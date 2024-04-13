@@ -417,6 +417,13 @@ class GenerateEvents:
                 if "other_cat_mentor" in event.tags and other_cat.ID != cat.mentor:
                     continue
                 
+                # Handles zombie attacks. It will not select zombie events for a living cat or a living cat to perform a zombie attack.
+                if "other_cat_zombie" in event.tags and other_cat.dead != 2:
+                    continue
+                if other_cat.dead == 2 and "other_cat_zombie" not in event.tags:
+                    continue
+                
+                
                 # check other cat trait and skill
                 has_trait = False
                 if event.other_cat_trait:
