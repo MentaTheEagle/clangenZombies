@@ -904,5 +904,47 @@
             "rebellious"
         ],
         "other_cat_skill": null
+    },
+    {
+        "injury": "crazed animal bite",
+        "camp": "any",
+        "tags": [
+            "Newleaf",
+            "Greenleaf",
+            "Leaf-fall",
+            "Leaf-bare",
+            "other_cat",
+            "other_cat_zombie"
+        ],
+        "event_text": "r_c stumbles towards m_c, who isn't quick enough to get out of the way. r_c bites {PRONOUN/m_c/object} before lurching away.",
+        "cat_negate_trait": null,
+        "cat_skill": null,
+        "cat_trait": [],
+        "other_cat_skill": null,
+	"cat_negate_skill": [
+		"FIGHTER,2",
+		"RUNNER,2"
+	]
+    },
+    {
+        "injury": "crazed animal bite",
+        "camp": "any",
+        "tags": [
+            "Newleaf",
+            "Greenleaf",
+            "Leaf-fall",
+            "Leaf-bare",
+            "other_cat",
+            "other_cat_zombie"
+        ],
+        "event_text": "m_c hisses as r_c slowly walks towards {PRONOUN/m_c/object}, feeling that something is very wrong with {PRONOUN/r_c/object}. m_c takes a few nasty bites while escaping from the seemingly-dead r_c.",
+        "cat_negate_trait": null,
+        "cat_skill": null,
+        "cat_trait": [],
+        "other_cat_skill": null,
+	"cat_negate_skill": [
+		"FIGHTER,2",
+		"RUNNER,2"
+	]
     }
 ]
