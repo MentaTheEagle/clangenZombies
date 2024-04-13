@@ -86,7 +86,7 @@ class AllegiancesScreen(Screens):
     def get_allegiances_text(self):
         """Determine Text. Ouputs list of tuples. """
 
-        living_cats = [i for i in Cat.all_cats.values() if not (i.dead or i.outside)]
+        living_cats = [i for i in Cat.all_cats.values() if not (i.dead == 1 or i.outside)]
         living_meds = []
         living_mediators = []
         living_warriors = []
