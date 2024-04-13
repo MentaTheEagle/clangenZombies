@@ -7,6 +7,9 @@ Original creator: just-some-cat.tumblr.com
 
 Fan-edit creator: SableSteel, and many others
 
+### Zombies Mod
+This mod adds in cats that are technically dead but can still interact with the living! It uses the developmental version only and may be buggy. Please let me know if it breaks anything!
+
 ## Downloads
 ### Stable
 Stable versions can be downloaded directly from the [official ClanGen website](https://clangen.io/download)
