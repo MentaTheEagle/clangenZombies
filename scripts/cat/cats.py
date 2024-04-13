@@ -143,7 +143,7 @@ class Cat():
             self.pronouns = [self.default_pronouns[0].copy()]
             self.moons = moons
             self.dead_for = 0
-            self.dead = True
+            self.dead = 1
             self.outside = False
             self.exiled = False
             self.inheritance = None # This should never be used, but just for safety
@@ -302,11 +302,11 @@ class Cat():
                     self.genderalign = self.gender
             else:
                 self.genderalign = self.gender
-
-            """if self.genderalign in ["female", "trans female"]:
+                
+            if self.genderalign in ["female", "trans female"]:
                 self.pronouns = [self.default_pronouns[1].copy()]
             elif self.genderalign in ["male", "trans male"]:
-                self.pronouns = [self.default_pronouns[2].copy()]"""
+                self.pronouns = [self.default_pronouns[2].copy()]
 
             # APPEARANCE
             self.pelt = Pelt.generate_new_pelt(self.gender, [Cat.fetch_cat(i) for i in (self.parent1, self.parent2) if i], self.age)
@@ -415,32 +415,44 @@ class Cat():
 
         May return some additional text to add to the death event.
         """
-        if self.status == 'leader' and 'pregnant' in self.injuries and game.clan.leader_lives > 0:
+        
+        text = ""
+        
+        """
+        Here is one of the biggest changes made. A cat will only truly die
+        and be grieved if it is NOT a zombie.
+        """
+        if 'blackblood' in self.illnesses:
+            text = "They've come back, but they don't seem right..."
+            self.dead = 2
             self.illnesses.clear()
-            self.injuries = { key : value for (key, value) in self.injuries.items() if key == 'pregnant'}
-        else:
             self.injuries.clear()
-            self.illnesses.clear()
+        else:
+            if self.status == 'leader' and 'pregnant' in self.injuries and game.clan.leader_lives > 0:
+                self.illnesses.clear()
+                self.injuries = { key : value for (key, value) in self.injuries.items() if key == 'pregnant'}
+            else:
+                self.injuries.clear()
+                self.illnesses.clear()
         
         # Deal with leader death
-        text = ""
-        if self.status == 'leader':
-            if game.clan.leader_lives > 0:
-                self.thought = 'Was startled to find themself in Silverpelt for a moment... did they lose a life?'
-                return ""
-            elif game.clan.leader_lives <= 0:
+            if self.status == 'leader':
+                if game.clan.leader_lives > 0:
+                    self.thought = 'Was startled to find themself in Silverpelt for a moment... did they lose a life?'
+                    return ""
+                elif game.clan.leader_lives <= 0:
+                    self.dead = 1
+                    game.just_died.append(self.ID)
+                    game.clan.leader_lives = 0
+                    self.thought = 'Is surprised to find themself walking the stars of Silverpelt'
+                    if game.clan.instructor.df is False:
+                        text = 'They\'ve lost their last life and have travelled to StarClan.'
+                    else:
+                        text = 'They\'ve lost their last life and have travelled to the Dark Forest.'
+            else:
                 self.dead = 1
                 game.just_died.append(self.ID)
-                game.clan.leader_lives = 0
                 self.thought = 'Is surprised to find themself walking the stars of Silverpelt'
-                if game.clan.instructor.df is False:
-                    text = 'They\'ve lost their last life and have travelled to StarClan.'
-                else:
-                    text = 'They\'ve lost their last life and have travelled to the Dark Forest.'
-        else:
-            self.dead = 1
-            game.just_died.append(self.ID)
-            self.thought = 'Is surprised to find themself walking the stars of Silverpelt'
 
         # Clear Relationships. 
         self.relationships = {}
@@ -451,10 +463,10 @@ class Cat():
                 fetched_cat.update_mentor()
         self.update_mentor()
 
-        if game.clan and game.clan.game_mode != 'classic' and not (self.outside or self.exiled) and body != None:
+        if game.clan and game.clan.game_mode != 'classic' and not (self.outside or self.exiled) and body != None and self.dead != 2:
             self.grief(body)
 
-        if not self.outside:
+        if not self.outside and self.dead != 2:
             Cat.dead_cats.append(self)
             if game.clan.instructor.df is False:
                 self.df = False
@@ -463,6 +475,9 @@ class Cat():
                 self.df = True
                 self.thought = "Is startled to find themself wading in the muck of a shadowed forest"
                 game.clan.add_to_darkforest(self)
+        elif self.dead == 2:
+            self.df = True
+            self.thought = "Brains... brains..."
         else:
             self.thought = "Is fascinated by the new ghostly world they've stumbled into"
             game.clan.add_to_unknown(self)
@@ -797,7 +812,9 @@ class Cat():
         the allegiances. If short is true, it will generate a very short one, with the minimal amount of information. """
         output = Pelt.describe_appearance(self, short)
         # Add "a" or "an"
-        if output[0].lower() in "aiou":
+        if self.dead == 2:
+            output = f"an undead {output}"
+        elif output[0].lower() in "aiou":
             output = f"an {output}"
         else:
             output = f"a {output}"
@@ -2877,7 +2894,7 @@ class Cat():
                 "specsuffix_hidden": self.name.specsuffix_hidden,
                 "gender": self.gender,
                 "gender_align": self.genderalign,
-                #"pronouns": self.pronouns,
+                "pronouns": self.pronouns,
                 "birth_cooldown": self.birth_cooldown,
                 "status": self.status,
                 "backstory": self.backstory if self.backstory else None,
@@ -3201,7 +3218,7 @@ def create_example_cats():
         for scar in game.choose_cats[a].pelt.scars:
             if scar in not_allowed:
                 game.choose_cats[a].pelt.scars.remove(scar)
-    
+        
         #update_sprite(game.choose_cats[a])
     
 

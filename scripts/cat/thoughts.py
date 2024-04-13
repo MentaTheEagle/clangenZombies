@@ -153,10 +153,12 @@ class Thoughts():
         if random_cat and 'random_living_status' in thought:
             if random_cat and not random_cat.dead:
                 living_status = "living"
-            elif random_cat and random_cat.dead and random_cat.df:
+            elif random_cat and random_cat.dead == 1 and random_cat.df:
                 living_status = "darkforest"
             elif random_cat and random_cat.dead and not random_cat.df:
                 living_status = "starclan"
+            elif random_cat and random_cat.dead == 2:
+                living_status = "zombie"
             else:
                 living_status = 'unknownresidence'
             if living_status and living_status not in thought['random_living_status']:
@@ -281,6 +283,8 @@ class Thoughts():
 
         if not main_cat.dead and main_cat.outside:
             spec_dir = "/alive_outside"
+        elif main_cat.dead == 2:
+            spec_dir = "/zombie"
         elif main_cat.dead and not main_cat.outside and not main_cat.df:
             spec_dir = "/starclan"
         elif main_cat.dead and not main_cat.outside and main_cat.df:
