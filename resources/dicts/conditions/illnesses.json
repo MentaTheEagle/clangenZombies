@@ -644,5 +644,31 @@
         "herbs": [
             "thyme"
         ]
+    },
+    "blackblood": {
+        "severity": "severe",
+        "mortality": {
+            "newborn": 3,
+            "kitten": 3,
+            "adolescent": 3,
+            "young adult": 3,
+            "adult": 3,
+            "senior adult": 3,
+            "senior": 3
+        },
+        "medicine_mortality": {
+            "newborn": 3,
+            "kitten": 3,
+            "adolescent": 3,
+            "young adult": 3,
+            "adult": 3,
+            "senior adult": 3,
+            "senior": 3
+        },
+        "duration": 12,
+        "medicine_duration": 12,
+        "infectiousness": 0,
+        "risks": [],
+        "herbs": []
     }
 }
