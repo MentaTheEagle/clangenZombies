@@ -360,6 +360,22 @@
                     "reg_death": "This cat died after eating tainted prey.",
                     "lead_death": "after eating tainted prey"
                 }
+            },
+            {
+                "text": "r_c tries to catch the rabbit, but it turns around and bites {PRONOUN/r_c/object} viciously before escaping!",
+                "exp": 0,
+                "weight": 5,
+                "injury": [
+                    {
+                        "cats": ["r_c"],
+                        "injuries": ["crazed animal bite"],
+                        "scars": []
+                    }
+                ],
+                "history_text": {
+                    "reg_death": "This cat was bitten by a strangely acting rabbit.",
+                    "lead_death": "after being bitten by a strangely acting rabbit"
+                }
             }
         ]
     },
