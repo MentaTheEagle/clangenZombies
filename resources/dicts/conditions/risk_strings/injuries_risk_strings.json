@@ -213,5 +213,11 @@
             "m_c yowls with pain, begging r_c for any relief. The damage to {PRONOUN/m_c/poss} head must have been severe to cause such painful headaches. ",
             "m_c can't focus on anything but the searing pain in {PRONOUN/m_c/poss} head. {PRONOUN/m_c/poss/CAP} head injury must have rattled something deep in {PRONOUN/m_c/poss} skull."
         ]
-    }
+    },
+    "crazed animal bite": {
+        "blackblood": [
+            "r_c is doing {PRONOUN/r_c/poss} best, but m_c's bite wound is turning black and {PRONOUN/m_c/subject}{VERB/m_c/'re/'s} becoming confused. ",
+            "m_c wanders through camp, delirious. This doesn't seem like a simple wound infection... "
+	]
+     }
 }
