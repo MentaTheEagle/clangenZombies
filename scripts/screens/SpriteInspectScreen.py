@@ -217,8 +217,11 @@ class SpriteInspectScreen(Screens):
         self.make_cat_image()
         
         cat_name = str(self.the_cat.name)  # name
-        if self.the_cat.dead:
+        if self.the_cat.dead == 1:
             cat_name += " (dead)"  # A dead cat will have the (dead) sign next to their name
+        elif self.the_cat.dead == 2:
+            cat_name += " (zombified)"
+            
         short_name = shorten_text_to_fit(cat_name, 390, 40)
         
         self.cat_elements["cat_name"] = pygame_gui.elements.UITextBox(short_name,
@@ -338,26 +341,31 @@ class SpriteInspectScreen(Screens):
 
         previous_cat = 0
         next_cat = 0
+        current_cat_found = 0
         if self.the_cat.dead and not is_instructor and self.the_cat.df == game.clan.instructor.df and \
                 not (self.the_cat.outside or self.the_cat.exiled):
             previous_cat = game.clan.instructor.ID
 
         if is_instructor:
-            next_cat = 1
+            current_cat_found = 1
 
-        for check_cat in Cat.all_cats_list:
+        if len(Cat.ordered_cat_list) == 0:
+            Cat.ordered_cat_list = Cat.all_cats_list
+
+        for check_cat in Cat.ordered_cat_list:
             if check_cat.ID == self.the_cat.ID:
-                next_cat = 1
+                current_cat_found = 1
             else:
-                if next_cat == 0 and check_cat.ID != self.the_cat.ID and check_cat.dead == self.the_cat.dead \
+                if current_cat_found == 0 and check_cat.ID != self.the_cat.ID and ((check_cat.dead == self.the_cat.dead) or (check_cat.dead == 0 and self.the_cat.dead == 2) or (check_cat.dead == 2 and self.the_cat.dead == 0) or (check_cat.dead == 2 and self.the_cat.dead == 2))\
                         and check_cat.ID != game.clan.instructor.ID and check_cat.outside == self.the_cat.outside and \
-                        check_cat.df == self.the_cat.df and not check_cat.faded:
+                        (check_cat.df == self.the_cat.df or self.the_cat.dead == 2 or check_cat.dead == 2) and not check_cat.faded:
                     previous_cat = check_cat.ID
 
-                elif next_cat == 1 and check_cat != self.the_cat.ID and check_cat.dead == self.the_cat.dead \
+                elif current_cat_found == 1 and check_cat != self.the_cat.ID and ((check_cat.dead == self.the_cat.dead) or (check_cat.dead == 0 and self.the_cat.dead == 2) or (check_cat.dead == 2 and self.the_cat.dead == 0) or (check_cat.dead == 2 and self.the_cat.dead == 2))\
                         and check_cat.ID != game.clan.instructor.ID and check_cat.outside == self.the_cat.outside and \
-                        check_cat.df == self.the_cat.df and not check_cat.faded:
+                        (check_cat.df == self.the_cat.df or self.the_cat.dead == 2 or check_cat.dead == 2) and not check_cat.faded:
                     next_cat = check_cat.ID
+                    break
 
                 elif int(next_cat) > 1:
                     break
@@ -459,10 +467,10 @@ class SpriteInspectScreen(Screens):
         if light_dark == "light":
             offset = 80
         
-        if the_cat.df:
+        if the_cat.df and the_cat.dead == 1:
             biome_platforms = platformsheet.subsurface(pygame.Rect(0, order.index('SC/DF') * 70, 640, 70))
             return biome_platforms.subsurface(pygame.Rect(0 + offset, 0, 80, 70))
-        elif the_cat.dead or game.clan.instructor.ID == the_cat.ID:
+        elif the_cat.dead == 1 or game.clan.instructor.ID == the_cat.ID:
             biome_platforms = platformsheet.subsurface(pygame.Rect(0, order.index('SC/DF') * 70, 640, 70))
             return biome_platforms.subsurface(pygame.Rect(160 + offset, 0, 80, 70))
         else:

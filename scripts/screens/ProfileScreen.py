@@ -264,11 +264,11 @@ class ProfileScreen(Screens):
                 ChangeCatName(self.the_cat)
             elif event.ui_element == self.specify_gender_button:
                 SpecifyCatGender(self.the_cat)
-                '''if self.the_cat.genderalign in ["female", "trans female"]:
+                if self.the_cat.genderalign in ["female", "trans female"]:
                     self.the_cat.pronouns = [self.the_cat.default_pronouns[1].copy()]
                 elif self.the_cat.genderalign in ["male", "trans male"]:
                     self.the_cat.pronouns = [self.the_cat.default_pronouns[2].copy()]
-                else: self.the_cat.pronouns = [self.the_cat.default_pronouns[0].copy()]'''
+                else: self.the_cat.pronouns = [self.the_cat.default_pronouns[0].copy()]
             #when button is pressed...
             elif event.ui_element == self.cis_trans_button:
                 #if the cat is anything besides m/f/transm/transf then turn them back to cis
@@ -288,7 +288,7 @@ class ProfileScreen(Screens):
                 #if the cat is trans then set them to nonbinary
                 elif self.the_cat.genderalign in ["trans female", "trans male"]:
                     self.the_cat.genderalign = 'nonbinary'
-                '''#pronoun handler
+                #pronoun handler
                 if self.the_cat.genderalign in ["female", "trans female"]:
                     self.the_cat.pronouns = [self.the_cat.default_pronouns[1].copy()]
                 elif self.the_cat.genderalign in ["male", "trans male"]:
@@ -296,7 +296,7 @@ class ProfileScreen(Screens):
                 elif self.the_cat.genderalign in ["nonbinary"]:
                     self.the_cat.pronouns = [self.the_cat.default_pronouns[0].copy()]
                 elif self.the_cat.genderalign not in ["female", "trans female", "male", "trans male"]:
-                    self.the_cat.pronouns = [self.the_cat.default_pronouns[0].copy()]'''
+                    self.the_cat.pronouns = [self.the_cat.default_pronouns[0].copy()]
                 self.clear_profile()
                 self.build_profile()
                 self.update_disabled_buttons_and_text()
@@ -312,7 +312,7 @@ class ProfileScreen(Screens):
                     self.clear_profile()
                     self.build_profile()
                     self.update_disabled_buttons_and_text()
-                if self.the_cat.dead:
+                if self.the_cat.dead == 1:
                     if self.the_cat.df is True:
                         self.the_cat.outside, self.the_cat.exiled = False, False
                         self.the_cat.df = False
@@ -359,7 +359,7 @@ class ProfileScreen(Screens):
                 self.fav_tab.show()
                 self.not_fav_tab.hide()
             elif event.ui_element == self.save_text:
-                self.user_notes = sub(r"[^A-Za-z0-9<->/.()*'&#!?,| _+=@~:;[]{}%$^`]+", "", self.notes_entry.get_text())
+                self.user_notes = sub(r"[^A-Za-z0-9<->/.()*'&#!?,| ]+", "", self.notes_entry.get_text())
                 self.save_user_notes()
                 self.editing_notes = False
                 self.update_disabled_buttons_and_text()
@@ -477,7 +477,10 @@ class ProfileScreen(Screens):
         cat_name = str(self.the_cat.name)
         cat_name = shorten_text_to_fit(cat_name, 425, 40)
         if self.the_cat.dead:
-            cat_name += " (dead)"  # A dead cat will have the (dead) sign next to their name
+            if self.the_cat.dead == 2:
+                cat_name += " (zombified)"
+            else:
+                cat_name += " (dead)"  # A dead cat will have the (dead) sign next to their name
         if is_sc_instructor:
             self.the_cat.thought = "Hello. I am here to guide the dead cats of " + game.clan.name + "Clan into StarClan."
         if is_df_instructor:
@@ -638,14 +641,14 @@ class ProfileScreen(Screens):
             if check_cat.ID == self.the_cat.ID:
                 current_cat_found = 1
             else:
-                if current_cat_found == 0 and check_cat.ID != self.the_cat.ID and check_cat.dead == self.the_cat.dead \
+                if current_cat_found == 0 and check_cat.ID != self.the_cat.ID and ((check_cat.dead == self.the_cat.dead) or (check_cat.dead == 0 and self.the_cat.dead == 2) or (check_cat.dead == 2 and self.the_cat.dead == 0) or (check_cat.dead == 2 and self.the_cat.dead == 2))\
                         and check_cat.ID != game.clan.instructor.ID and check_cat.outside == self.the_cat.outside and \
-                        check_cat.df == self.the_cat.df and not check_cat.faded:
+                        (check_cat.df == self.the_cat.df or self.the_cat.dead == 2 or check_cat.dead == 2) and not check_cat.faded:
                     previous_cat = check_cat.ID
 
-                elif current_cat_found == 1 and check_cat != self.the_cat.ID and check_cat.dead == self.the_cat.dead \
+                elif current_cat_found == 1 and check_cat != self.the_cat.ID and ((check_cat.dead == self.the_cat.dead) or (check_cat.dead == 0 and self.the_cat.dead == 2) or (check_cat.dead == 2 and self.the_cat.dead == 0) or (check_cat.dead == 2 and self.the_cat.dead == 2))\
                         and check_cat.ID != game.clan.instructor.ID and check_cat.outside == self.the_cat.outside and \
-                        check_cat.df == self.the_cat.df and not check_cat.faded:
+                        (check_cat.df == self.the_cat.df or self.the_cat.dead == 2 or check_cat.dead == 2) and not check_cat.faded:
                     next_cat = check_cat.ID
                     break
 
@@ -1454,7 +1457,7 @@ class ProfileScreen(Screens):
                     if not moons:
                         name_list.append(name)
                     else:
-                        name_list.append(f"{name} (Moon {victim_names[name][0]})")
+                        name_list.append(name + f" (Moon {', '.join(victim_names[name])})")
 
                 if len(name_list) == 1:
                     victim_text = f"{self.the_cat.name} murdered {name_list[0]}."
@@ -1845,7 +1848,7 @@ class ProfileScreen(Screens):
                     starting_height=2, manager=MANAGER)
                 if self.the_cat.exiled or self.the_cat.outside:
                     self.exile_cat_button.disable()
-            elif self.the_cat.dead:
+            elif self.the_cat.dead == 1:
                 object_id = "#exile_df_button"
                 if self.the_cat.df:
                     object_id = "#guide_sc_button"
@@ -2069,11 +2072,11 @@ class ProfileScreen(Screens):
         offset = 0
         if light_dark == "light":
             offset = 80
-                
-        if the_cat.df:
+        
+        if the_cat.df and the_cat.dead == 1:
             biome_platforms = platformsheet.subsurface(pygame.Rect(0, order.index('SC/DF') * 70, 640, 70))
             return pygame.transform.scale(biome_platforms.subsurface(pygame.Rect(0 + offset, 0, 80, 70)), (240, 210))
-        elif the_cat.dead or game.clan.instructor.ID == the_cat.ID:
+        elif the_cat.dead == 1 or game.clan.instructor.ID == the_cat.ID:
             biome_platforms = platformsheet.subsurface(pygame.Rect(0, order.index('SC/DF') * 70, 640, 70))
             return pygame.transform.scale(biome_platforms.subsurface(pygame.Rect(160 + offset, 0, 80, 70)), (240, 210))
         else:
