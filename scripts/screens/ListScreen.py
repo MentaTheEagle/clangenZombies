@@ -238,8 +238,6 @@ class ListScreen(Screens):
             self.show_dead_button.hide()
         else:
             self.show_living_button.hide()
-            if game.sort_type == 'death':
-                game.sort_type = 'rank'
 
         x_pos = 717
         self.choose_group_button = UIImageButton(scale(pygame.Rect((x_pos, y_pos), (380, 68))), "",
@@ -495,7 +493,7 @@ class ListScreen(Screens):
         self.death_status = 'living'
         self.full_cat_list = []
         for the_cat in Cat.all_cats_list:
-            if not the_cat.dead and not the_cat.outside:
+            if not the_cat.dead == 1 and not the_cat.outside:
                 self.full_cat_list.append(the_cat)
 
     def get_cotc_cats(self):
@@ -503,7 +501,7 @@ class ListScreen(Screens):
         self.death_status = 'living'
         self.full_cat_list = []
         for the_cat in Cat.all_cats_list:
-            if not the_cat.dead and the_cat.outside:
+            if not the_cat.dead == 1 and the_cat.outside:
                 self.full_cat_list.append(the_cat)
 
     def get_sc_cats(self):
@@ -511,7 +509,7 @@ class ListScreen(Screens):
         self.death_status = 'dead'
         self.full_cat_list = []
         for the_cat in Cat.all_cats_list:
-            if the_cat.dead and the_cat.ID != game.clan.instructor.ID and not the_cat.outside and not the_cat.df and \
+            if the_cat.dead == 1 and the_cat.ID != game.clan.instructor.ID and not the_cat.outside and not the_cat.df and \
                     not the_cat.faded:
                 self.full_cat_list.append(the_cat)
 
@@ -521,7 +519,7 @@ class ListScreen(Screens):
         self.full_cat_list = []
 
         for the_cat in Cat.all_cats_list:
-            if the_cat.dead and the_cat.ID != game.clan.instructor.ID and the_cat.df and \
+            if the_cat.dead == 1 and the_cat.ID != game.clan.instructor.ID and the_cat.df and \
                     not the_cat.faded:
                 self.full_cat_list.append(the_cat)
 
